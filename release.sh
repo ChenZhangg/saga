@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CUR_VERSION=`mvn help:evaluate -Dexpression=project.version | grep -v '\['`
+CUR_VERSION=`mvn -T 1C help:evaluate -Dexpression=project.version | grep -v '\['`
 
 while getopts "d:r:" opt
 do
@@ -15,14 +15,14 @@ then
     echo "Development version: $DEV_VERSION"
     echo "Release version: $REL_VERSION"
 
-    mvn release:clean &&                     \
-    mvn release:prepare                      \
+    mvn -T 1C release:clean &&                     \
+    mvn -T 1C release:prepare                      \
         --batch-mode                         \
         -Dtag=saga-root-$REL_VERSION         \
         -DreleaseVersion=$REL_VERSION        \
         -DdevelopmentVersion=$DEV_VERSION && \
 
-    mvn release:perform
+    mvn -T 1C release:perform
 else
     echo "Usage: ./release.sh -d <development version> -r <release version>"
     exit 1
